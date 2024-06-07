@@ -1,0 +1,78 @@
+object TimerAppForm: TTimerAppForm
+  Left = 0
+  Top = 0
+  Anchors = [akLeft, akRight]
+  Caption = 'TimerApp'
+  ClientHeight = 251
+  ClientWidth = 248
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  OnCreate = FormCreate
+  DesignSize = (
+    248
+    251)
+  TextHeight = 15
+  object Label1: TLabel
+    Left = 32
+    Top = 147
+    Width = 110
+    Height = 15
+    Caption = 'Set a timer (seconds)'
+  end
+  object TimerLbl: TLabel
+    Left = 8
+    Top = 74
+    Width = 232
+    Height = 37
+    Alignment = taCenter
+    Anchors = []
+    AutoSize = False
+    Caption = '00:00:00'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -32
+    Font.Name = 'Consolas'
+    Font.Style = [fsBold]
+    ParentFont = False
+    Layout = tlCenter
+  end
+  object TimeSpinEdt: TSpinEdit
+    Left = 148
+    Top = 144
+    Width = 64
+    Height = 26
+    MaxValue = 10800
+    MinValue = 1
+    TabOrder = 0
+    Value = 300
+  end
+  object ResetBtn: TButton
+    Left = 131
+    Top = 191
+    Width = 81
+    Height = 25
+    Caption = 'Reset'
+    Enabled = False
+    TabOrder = 1
+    OnClick = ResetBtnClick
+  end
+  object StartBtn: TButton
+    Left = 24
+    Top = 191
+    Width = 93
+    Height = 25
+    Caption = 'Start'
+    TabOrder = 2
+    OnClick = StartBtnClick
+  end
+  object Timer1: TTimer
+    Enabled = False
+    OnTimer = Timer1Timer
+    Left = 8
+    Top = 8
+  end
+end

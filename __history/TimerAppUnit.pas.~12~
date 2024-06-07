@@ -1,0 +1,99 @@
+unit TimerAppUnit;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.ComCtrls, Vcl.ToolWin,
+  Vcl.StdCtrls, Vcl.Samples.Spin, MMSystem;
+
+type
+  TTimerAppForm = class(TForm)
+    TimeSpinEdt: TSpinEdit;
+    ResetBtn: TButton;
+    Label1: TLabel;
+    TimerLbl: TLabel;
+    StartBtn: TButton;
+    Timer1: TTimer;
+    procedure Timer1Timer(Sender: TObject);
+    procedure StartBtnClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure UpdateLabel;
+    procedure ResetBtnClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  TimerAppForm: TTimerAppForm;
+  var countdownTime: integer;
+
+implementation
+
+{$R *.dfm}
+
+procedure TTimerAppForm.FormCreate(Sender: TObject);
+begin
+  countdownTime := 0; // Set the initial countdown time (e.g., 5 minutes)
+  UpdateLabel;
+end;
+
+
+procedure TTimerAppForm.StartBtnClick(Sender: TObject);
+begin
+  if countdownTime = 0 then
+    countdownTime := TimeSpinEdt.Value;
+
+  Timer1.Enabled := not Timer1.Enabled; ResetBtn.Enabled := True;
+
+  if Timer1.Enabled then StartBtn.Caption := 'Pause'
+  else
+    StartBtn.Caption := 'Start';
+end;
+
+procedure TTimerAppForm.ResetBtnClick(Sender: TObject);
+begin
+
+  Timer1.Enabled := False; ResetBtn.Enabled := False; StartBtn.Caption := 'Start';
+  countdownTime := 0; UpdateLabel; // Reset the countdown time & Update the Label
+end;
+
+procedure TTimerAppForm.Timer1Timer(Sender: TObject);
+begin
+//  TimerLbl.Caption := TimeToStr(Now);
+//  countdownTime := countdownTime - 1;
+
+  if countdownTime > 0 then begin
+    UpdateLabel; Dec(countdownTime); // Update the Label & Decrement the countdown time
+  end
+  else begin
+    Timer1.Enabled := False; // Stop the timer when it reaches zero
+    StartBtn.Caption := 'Start'; ResetBtn.Enabled := False;
+
+    mciSendString('open "electronic_alarm_clock.mp3" type mpegvideo alias mp3', nil, 0, 0);
+    mciSendString('play mp3 repeat', nil, 0, 0);
+
+//    MessageBox(Handle, 'Hello, world!', 'Message', MB_OK);
+
+//    repeat
+//      Application.ProcessMessages; // Allow the application to handle messages
+//      Sleep(100); // Sleep for a short duration to avoid high CPU usage
+//    until not MessageBox(Handle, 'Hello, world!', 'Message', MB_OK) = IDOK;
+
+
+//    mciSendString('stop mp3', nil, 0, 0);
+//    mciSendString('close mp3', nil, 0, 0);
+  end
+end;
+
+procedure TTimerAppForm.UpdateLabel;
+begin
+  TimerLbl.Caption := FormatDateTime('hh:nn:ss', CountdownTime / SecsPerDay);
+
+//  TimerLbl.Caption := Format('%.2d:%.2d', [CountdownTime div 60, CountdownTime mod 60]);
+//  TimerLbl.Caption := Format('%.2d:%.2d:%.2d', [CountdownTime div 3600, (CountdownTime div 60) mod 60, CountdownTime mod 60]);
+end;
+
+end.
